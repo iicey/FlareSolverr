@@ -390,6 +390,11 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
         logging.info("Challenge not detected!")
         res.message = "Challenge not detected!"
 
+    WebDriverWait(driver, SHORT_TIMEOUT).until(
+        lambda d: d.execute_script('return document.readyState') == 'complete'
+    )
+    time.sleep(2)
+
     challenge_res = ChallengeResolutionResultT({})
     challenge_res.url = driver.current_url
     challenge_res.status = 200  # todo: fix, selenium not provides this info
